@@ -18,7 +18,7 @@ header {
 
 background-color: #4CAF50;
 
-color: white;
+color: red;
 
 padding: 20px;
 
@@ -36,9 +36,9 @@ margin: 0;
 
 nav a {
 
-color: white;
+color: red;
 
-text-decoration: none;
+text-decoration: pixelated;
 
 margin: 0 10px;
 
@@ -50,3 +50,4 @@ nav a:hover {
 text-decoration: underline;
 
 }
+
