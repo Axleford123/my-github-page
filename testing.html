@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quantum Core Systems | Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    // Tailwind script
+    document.addEventListener('DOMContentLoaded', () => {
+      tailwind.config = { content: [], theme: { extend: {} } };
+    });
+
+    // Sample products
+    const products = [
+      { id: 1, name: "Gaming Laptop XYZ", price: 24999, cpu: "Intel i7", ram: "16GB", gpu: "RTX 4060", image: "https://picsum.photos/id/1015/600/400" },
+      { id: 2, name: "Work Laptop ABC", price: 34999, cpu: "AMD Ryzen 7", ram: "32GB", gpu: "Integrated", image: "https://picsum.photos/id/201/600/400" },
+      { id: 3, name: "Premium Laptop DEF", price: 44999, cpu: "Intel i9", ram: "32GB", gpu: "RTX 4080", image: "https://picsum.photos/id/30/600/400" }
+    ];
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function addToCart(product) {
+      cart.push(product);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert(`${product.name} added to cart!`);
+      updateCartCount();
+    }
+
+    function updateCartCount() {
+      document.getElementById('cart-count').textContent = cart.length;
+    }
+
+    function filterProducts() {
+      const query = document.getElementById('search').value.toLowerCase();
+      const filtered = products.filter(p => 
+        p.name.toLowerCase().includes(query) || p.cpu.toLowerCase().includes(query)
+      );
+      renderProducts(filtered);
+    }
+
+    function renderProducts(list) {
+      const container = document.getElementById('product-grid');
+      container.innerHTML = '';
+      list.forEach(product => {
+        const card = `
+          <div class="border rounded-lg overflow-hidden shadow hover:shadow-xl transition">
+            <a href="product-detail.html?id=${product.id}">
+              <img src="${product.image}" class="w-full h-48 object-cover">
+            </a>
+            <div class="p-4">
+              <h3 class="font-bold">${product.name}</h3>
+              <div class="text-sm text-gray-600 mt-1">
+                ${product.cpu} • ${product.ram} • ${product.gpu}
+              </div>
+              <div class="flex justify-between items-center mt-3">
+                <span class="text-xl font-bold">P${product.price.toLocaleString()}</span>
+                <button onclick="addToCart(products.find(p=>p.id===${product.id}))" 
+                        class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>`;
+        container.innerHTML += card;
+      });
+    }
+
+    window.onload = () => {
+      renderProducts(products);
+      updateCartCount();
+    };
+  </script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <!-- GLOBAL NAV -->
+  <nav class="bg-white border-b sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-8">
+        <a href="index.html" class="text-2xl font-bold tracking-tight">Quantum Core Systems</a>
+        <div class="hidden md:flex gap-6">
+          <a href="#" class="hover:text-black">Gaming ▾</a>
+          <a href="#" class="hover:text-black">Work ▾</a>
+          <a href="#" class="hover:text-black">Accessories</a>
+          <a href="#" class="hover:text-black">Brands</a>
+        </div>
+      </div>
+      <div class="flex-1 max-w-md mx-8">
+        <input id="search" type="text" placeholder="Search laptops..." 
+               onkeyup="if(event.key==='Enter') filterProducts()" 
+               class="w-full border rounded-full px-6 py-3 focus:outline-none">
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="cart.html" class="relative">
+          <i class="fa-solid fa-shopping-cart text-2xl"></i>
+          <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+        </a>
+        <a href="feedback.html" class="text-sm font-medium border px-5 py-2 rounded-full hover:bg-black hover:text-white">Feedback</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="bg-black text-white py-16">
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <h1 class="text-5xl font-bold leading-tight">High-Performance Laptops & Accessories</h1>
+        <p class="mt-4 text-xl">Built for Gaming. Built for Work.</p>
+        <div class="mt-8 flex gap-4">
+          <a href="#" class="bg-white text-black px-8 py-4 rounded font-medium">Shop Gaming</a>
+          <a href="#" class="border border-white px-8 py-4 rounded font-medium">Shop Work</a>
+        </div>
+      </div>
+      <div class="text-center">
+        <img src="https://picsum.photos/id/1015/800/500" class="rounded-2xl shadow-2xl mx-auto">
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="max-w-7xl mx-auto px-6 py-12 grid md:grid-cols-4 gap-8">
+    <!-- Sidebar Filters -->
+    <div class="md:col-span-1 border rounded-2xl p-6 h-fit">
+      <h3 class="font-semibold mb-6">Filters</h3>
+      <div class="space-y-8">
+        <div>
+          <p class="font-medium mb-3">CPU</p>
+          <div class="flex flex-wrap gap-2">
+            <span onclick="filterProducts()" class="cursor-pointer text-xs bg-gray-100 hover:bg-black hover:text-white px-4 py-2 rounded-full">Intel i7</span>
+            <span onclick="filterProducts()" class="cursor-pointer text-xs bg-gray-100 hover:bg-black hover:text-white px-4 py-2 rounded-full">AMD Ryzen 7</span>
+            <span onclick="filterProducts()" class="cursor-pointer text-xs bg-gray-100 hover:bg-black hover:text-white px-4 py-2 rounded-full">Intel i9</span>
+          </div>
+        </div>
+        <div>
+          <p class="font-medium mb-3">Price Range</p>
+          <input type="range" min="8000" max="45000" value="25000" class="w-full">
+          <div class="flex justify-between text-sm mt-1">
+            <span>P8,000</span><span>P45,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="md:col-span-3">
+      <h2 class="text-3xl font-bold mb-6">Featured Laptops</h2>
+      <div id="product-grid" class="grid md:grid-cols-3 gap-6"></div>
+    </div>
+  </div>
+
+  <!-- GLOBAL FOOTER -->
+  <footer class="bg-white border-t mt-12">
+    <div class="max-w-7xl mx-auto px-6 py-12 grid md:grid-cols-3 gap-8 text-sm">
+      <div>
+        <strong>Shop Links</strong><br>
+        Laptops • Accessories • Brands
+      </div>
+      <div>
+        <strong>Support</strong><br>
+        Warranty • Returns • Drivers
+      </div>
+      <div>
+        <strong>Company</strong><br>
+        About Us • Contact • Careers
+      </div>
+      <div class="md:col-span-3 text-center text-xs pt-8 border-t mt-8">
+        © 2026 Quantum Core Systems — All Rights Reserved
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
